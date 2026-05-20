@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bug Tracker</title>
+</head>
+<body>
+
+<h1>Bug Tracker</h1>
+
+<input type="text" id="bug" placeholder="Enter Bug">
+<button onclick="addBug()">Add Bug</button>
+
+<ul id="list"></ul>
+
+<script>
+
+async function addBug() {
+
+    let bug = document.getElementById("bug").value;
+
+    await fetch('/bugs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ bug })
+    });
+
+    loadBugs();
+}
+
+async function loadBugs() {
+
+    let response = await fetch('/bugs');
+    let data = await response.json();
+
+    let list = document.getElementById("list");
+    list.innerHTML = "";
+
+    data.forEach(b => {
+        list.innerHTML += `<li>${b.bug}</li>`;
+    });
+}
+
+loadBugs();
+
+</script>
+
+</body>
+</html>
