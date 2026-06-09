@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Employee Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f8fc;
+}
+
+/* NAVBAR */
+
+.navbar{
+
+    height:80px;
+
+    background:#081c4d;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 50px;
+
+    color:white;
+}
+
+.logo{
+
+    font-size:30px;
+
+    font-weight:700;
+}
+
+.nav-links{
+
+    display:flex;
+
+    gap:30px;
+}
+
+.nav-links a{
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:500;
+}
+
+/* HERO */
+
+.hero{
+
+    height:420px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #003b8e,
+    #0066ff,
+    #00b7ff
+    );
+
+    color:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:60px;
+
+    overflow:hidden;
+}
+
+.hero-left h1{
+
+    font-size:58px;
+
+    line-height:1.2;
+}
+
+.hero-left p{
+
+    margin-top:20px;
+
+    font-size:20px;
+}
+
+.hero-buttons{
+
+    margin-top:30px;
+}
+
+.hero-buttons button{
+
+    border:none;
+
+    padding:15px 30px;
+
+    border-radius:10px;
+
+    margin-right:15px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+}
+
+.report-btn{
+
+    background:white;
+
+    color:#0052cc;
+}
+
+.bugs-btn{
+
+    background:#081c4d;
+
+    color:white;
+}
+
+.hero-right{
+
+    font-size:180px;
+}
+
+/* STATS */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:20px;
+
+    margin:40px;
+
+    margin-top:-50px;
+}
+
+.card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+}
+
+.card h3{
+
+    color:#64748b;
+}
+
+.card h1{
+
+    margin-top:10px;
+
+    color:#081c4d;
+}
+
+/* REPORT SECTION */
+
+.report-section{
+
+    background:white;
+
+    margin:40px;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+}
+
+.report-section h2{
+
+    margin-bottom:20px;
+}
+
+input,
+textarea,
+select{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-bottom:15px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+}
+
+.submit-btn{
+
+    background:#0052cc;
+
+    color:white;
+
+    border:none;
+
+    padding:15px;
+
+    width:100%;
+
+    border-radius:10px;
+
+    cursor:pointer;
+}
+
+/* TABLE */
+
+.table-section{
+
+    background:white;
+
+    margin:40px;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+th,
+td{
+
+    padding:15px;
+
+    text-align:left;
+}
+
+th{
+
+    background:#f8fafc;
+}
+
+tr{
+
+    border-bottom:1px solid #eee;
+}
+
+.status{
+
+    background:#f59e0b;
+
+    color:white;
+
+    padding:5px 10px;
+
+    border-radius:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        🐞 BUGTRACK PRO
+    </div>
+
+    <div class="nav-links">
+
+        <a href="#" onclick="logout()">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+<div class="hero">
+
+    <div class="hero-left">
+
+        <h1>
+            Track.<br>
+            Report.<br>
+            Resolve.
+        </h1>
+
+        <p>
+            Enterprise Bug Tracking Platform
+        </p>
+
+        <div class="hero-buttons">
+
+            <button
+            class="report-btn"
+            onclick="scrollToReport()">
+            Report Bug
+
+            </button>
+
+            <button
+            class="bugs-btn"
+            onclick="scrollToBugs()">
+            My Bugs
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+
+        🐞
+
+    </div>
+
+</div>
+
+<div class="stats">
+
+    <div class="card">
+
+        <h3>Open Bugs</h3>
+
+        <h1 id="openCount">
+            0
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Resolved</h3>
+
+        <h1 id="resolvedCount">
+            0
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Critical</h3>
+
+        <h1 id="criticalCount">
+            0
+        </h1>
+
+    </div>
+
+    <div class="card">
+
+        <h3>My Reports</h3>
+
+        <h1 id="totalCount">
+            0
+        </h1>
+
+    </div>
+
+</div>
+
+<div class="report-section" id="reportSection">
+
+    <h2>Report New Bug</h2>
+
+    <input
+    id="title"
+    placeholder="Bug Title">
+
+    <textarea
+    id="description"
+    rows="4"
+    placeholder="Description"></textarea>
+
+    <input
+    id="module"
+    placeholder="Module">
+
+    <select id="severity">
+
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+
+    </select>
+
+    <button
+    class="submit-btn"
+    onclick="submitBug()">
+
+    Submit Bug
+
+    </button>
+
+</div>
+
+<div class="table-section" id="myBugsSection">
+
+    <h2>My Bugs</h2>
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>Title</th>
+            <th>Module</th>
+            <th>Severity</th>
+            <th>Status</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody id="bugTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+
+document.addEventListener(
+"DOMContentLoaded",
+loadBugs
+);
+async function submitBug(){
+
+    const bug = {
+
+        title:
+        document.getElementById("title").value,
+
+        description:
+        document.getElementById("description").value,
+
+        module:
+        document.getElementById("module").value,
+
+        severity:
+        document.getElementById("severity").value,
+
+        reportedBy:
+        localStorage.getItem("username")
+
+    };
+
+    const response =
+    await fetch("/bugs",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(bug)
+
+    });
+
+    const data =
+    await response.json();
+
+    alert(data.message);
+
+    loadBugs();
+
+}
+async function loadBugs(){
+
+    const username =
+    localStorage.getItem("username");
+
+    const response =
+    await fetch(
+        `/mybugs/${username}`
+    );
+
+    const bugs =
+    await response.json();
+
+    let rows = "";
+
+    let open = 0;
+    let resolved = 0;
+    let critical = 0;
+
+    bugs.forEach(bug => {
+
+        if(bug.status === "Open")
+            open++;
+
+        if(bug.status === "Resolved")
+            resolved++;
+
+        if(bug.severity === "High")
+            critical++;
+
+        rows += `
+
+        <tr>
+
+            <td>${bug.title}</td>
+
+            <td>${bug.module}</td>
+
+            <td>${bug.severity}</td>
+
+            <td>
+                <span class="status">
+                    ${bug.status}
+                </span>
+            </td>
+
+        </tr>
+
+        `;
+    });
+
+    document.getElementById(
+        "bugTable"
+    ).innerHTML = rows;
+
+    document.getElementById(
+        "openCount"
+    ).innerText = open;
+
+    document.getElementById(
+        "resolvedCount"
+    ).innerText = resolved;
+
+    document.getElementById(
+        "criticalCount"
+    ).innerText = critical;
+
+    document.getElementById(
+        "totalCount"
+    ).innerText = bugs.length;
+
+}
+function scrollToReport(){
+
+    document
+    .getElementById(
+        "reportSection"
+    )
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+function scrollToBugs(){
+
+    document
+    .getElementById(
+        "myBugsSection"
+    )
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+function logout(){
+
+    localStorage.clear();
+
+    window.location =
+    "login.html";
+}
+
+</script>
+
+</body>
+</html>

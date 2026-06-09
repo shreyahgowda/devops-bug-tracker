@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUGTRACK PRO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+    <div class="left">
+
+        <div class="logo-icon">
+            🐞
+        </div>
+
+        <h1>BUGTRACK PRO</h1>
+
+        <p>
+            Track • Assign • Resolve
+        </p>
+
+        <br>
+
+        <p>
+            Enterprise Bug Tracking Platform
+            for modern software teams.
+        </p>
+
+    </div>
+
+    <div class="right">
+
+        <h2>Select Your Role</h2>
+
+        <div id="roleSelection">
+
+            <div class="role-card admin"
+                onclick="selectRole('admin')">
+
+                🛡 Admin Login
+
+            </div>
+
+            <div class="role-card developer"
+                onclick="selectRole('developer')">
+
+                👨‍💻 Developer Login
+
+            </div>
+
+            <div class="role-card employee"
+                onclick="selectRole('employee')">
+
+                👨 Employee Login
+
+            </div>
+
+        </div>
+
+        <div id="loginForm"
+             style="display:none">
+
+            <button
+            class="back-btn"
+            onclick="goBack()">
+
+            ← Back
+
+            </button>
+
+            <h2 id="roleTitle"></h2>
+
+            <input
+            id="username"
+            placeholder="Username">
+
+            <input
+            id="password"
+            type="password"
+            placeholder="Password">
+
+            <button
+            class="login-btn"
+            onclick="login()">
+
+            Login
+
+            </button>
+
+            <p id="message"></p>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="script.js"></script>
+
+</body>
+</html>

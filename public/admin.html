@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+}
+
+/* NAVBAR */
+
+.navbar{
+
+    height:80px;
+
+    background:#081c4d;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 40px;
+
+    color:white;
+}
+
+.logo{
+
+    font-size:28px;
+
+    font-weight:700;
+}
+
+.logout-btn{
+
+    background:#ef4444;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+
+    background:
+    linear-gradient(
+    135deg,
+    #081c4d,
+    #0052cc,
+    #00a8ff
+    );
+
+    color:white;
+
+    padding:60px;
+}
+
+.hero h1{
+
+    font-size:52px;
+
+    margin-bottom:10px;
+}
+
+.hero p{
+
+    font-size:18px;
+}
+
+/* CARDS */
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:20px;
+
+    margin:30px;
+
+    margin-top:-40px;
+}
+
+.card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+}
+
+.card h3{
+
+    color:#64748b;
+}
+
+.card h1{
+
+    color:#0052cc;
+
+    margin-top:10px;
+}
+
+/* CONTROLS */
+
+.controls{
+
+    margin:30px;
+
+    display:flex;
+
+    gap:15px;
+}
+
+.controls input{
+
+    flex:1;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+}
+
+.controls select{
+
+    padding:15px;
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+}
+
+/* TABLE */
+
+.table-section{
+
+    background:white;
+
+    margin:30px;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+
+    overflow-x:auto;
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+th,td{
+
+    padding:15px;
+
+    text-align:left;
+}
+
+th{
+
+    background:#f8fafc;
+}
+
+tr{
+
+    border-bottom:1px solid #eee;
+}
+
+/* BUTTONS */
+
+.assign-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.edit-btn{
+
+    background:#f59e0b;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.delete-btn{
+
+    background:#ef4444;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.status-open{
+
+    color:#dc2626;
+    font-weight:bold;
+}
+
+.status-progress{
+
+    color:#f59e0b;
+    font-weight:bold;
+}
+
+.status-resolved{
+
+    color:#16a34a;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        🐞 BUGTRACK PRO
+    </div>
+
+    <button
+    class="logout-btn"
+    onclick="logout()">
+
+    Logout
+
+    </button>
+
+</div>
+
+<div class="hero">
+
+    <h1>Admin Dashboard</h1>
+
+    <p>
+        Manage Bugs, Developers and Workflow
+    </p>
+
+</div>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>Total Bugs</h3>
+        <h1 id="totalCount">0</h1>
+    </div>
+
+    <div class="card">
+        <h3>Open Bugs</h3>
+        <h1 id="openCount">0</h1>
+    </div>
+
+    <div class="card">
+        <h3>Resolved Bugs</h3>
+        <h1 id="resolvedCount">0</h1>
+    </div>
+
+    <div class="card">
+        <h3>Critical Bugs</h3>
+        <h1 id="criticalCount">0</h1>
+    </div>
+
+</div>
+
+<div class="controls">
+
+    <input
+    type="text"
+    id="searchBox"
+    placeholder="Search Bug Title..."
+    onkeyup="loadBugs()">
+
+    <select
+    id="statusFilter"
+    onchange="loadBugs()">
+
+        <option value="All">
+            All Status
+        </option>
+
+        <option value="Open">
+            Open
+        </option>
+
+        <option value="In Progress">
+            In Progress
+        </option>
+
+        <option value="Resolved">
+            Resolved
+        </option>
+
+    </select>
+
+</div>
+
+<div class="table-section">
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>Title</th>
+            <th>Module</th>
+            <th>Severity</th>
+            <th>Status</th>
+            <th>Assigned To</th>
+            <th>Reported By</th>
+            <th>Assign</th>
+            <th>Edit</th>
+            <th>Delete</th>
+
+        </tr>
+
+        </thead>
+
+        <tbody id="bugTable">
+
+        </tbody>
+
+    </table>
+
+</div>
+<script>
+
+let allBugs = [];
+
+loadBugs();
+
+async function loadBugs(){
+
+    const response =
+    await fetch("/bugs");
+
+    allBugs =
+    await response.json();
+
+    const search =
+    document.getElementById(
+        "searchBox"
+    ).value.toLowerCase();
+
+    const filter =
+    document.getElementById(
+        "statusFilter"
+    ).value;
+
+    let rows = "";
+
+    let open = 0;
+    let resolved = 0;
+    let critical = 0;
+
+    allBugs.forEach(bug=>{
+
+        if(
+            !bug.title
+            .toLowerCase()
+            .includes(search)
+        ){
+            return;
+        }
+
+        if(
+            filter !== "All"
+            &&
+            bug.status !== filter
+        ){
+            return;
+        }
+
+        if(bug.status==="Open")
+            open++;
+
+        if(bug.status==="Resolved")
+            resolved++;
+
+        if(bug.severity==="High")
+            critical++;
+
+        rows += `
+
+        <tr>
+
+            <td>${bug.title}</td>
+
+            <td>${bug.module}</td>
+
+            <td>${bug.severity}</td>
+
+            <td>
+
+            <select
+            onchange="changeStatus(
+            '${bug._id}',
+            this.value
+            )">
+
+                <option
+                ${bug.status==="Open"
+                ?"selected":""}>
+                Open
+                </option>
+
+                <option
+                ${bug.status==="In Progress"
+                ?"selected":""}>
+                In Progress
+                </option>
+
+                <option
+                ${bug.status==="Resolved"
+                ?"selected":""}>
+                Resolved
+                </option>
+
+            </select>
+
+            </td>
+
+            <td>
+
+            ${bug.assignedTo || "-"}
+
+            </td>
+
+            <td>
+
+            ${bug.reportedBy}
+
+            </td>
+
+            <td>
+
+            <select
+            id="dev-${bug._id}">
+
+                <option>
+                developer
+                </option>
+
+            </select>
+
+            <button
+            class="assign-btn"
+            onclick="assignBug(
+            '${bug._id}'
+            )">
+
+            Assign
+
+            </button>
+
+            </td>
+
+            <td>
+
+            <button
+            class="edit-btn"
+            onclick="editBug(
+            '${bug._id}'
+            )">
+
+            Edit
+
+            </button>
+
+            </td>
+
+            <td>
+
+            <button
+            class="delete-btn"
+            onclick="deleteBug(
+            '${bug._id}'
+            )">
+
+            Delete
+
+            </button>
+
+            </td>
+
+        </tr>
+
+        `;
+    });
+
+    document.getElementById(
+        "bugTable"
+    ).innerHTML = rows;
+
+    document.getElementById(
+        "totalCount"
+    ).innerText = allBugs.length;
+
+    document.getElementById(
+        "openCount"
+    ).innerText = open;
+
+    document.getElementById(
+        "resolvedCount"
+    ).innerText = resolved;
+
+    document.getElementById(
+        "criticalCount"
+    ).innerText = critical;
+
+}
+
+async function assignBug(id){
+
+    const developer =
+    document.getElementById(
+        `dev-${id}`
+    ).value;
+
+    await fetch(
+        `/bugs/${id}/assign`,
+        {
+            method:"PUT",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+                assignedTo:developer
+            })
+        }
+    );
+
+    loadBugs();
+
+}
+
+async function changeStatus(
+    id,
+    status
+){
+
+    await fetch(
+        `/bugs/${id}/status`,
+        {
+            method:"PUT",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+                status:status
+            })
+        }
+    );
+
+    loadBugs();
+
+}
+
+async function editBug(id){
+
+    const title =
+    prompt(
+        "Enter New Title"
+    );
+
+    if(!title) return;
+
+    const severity =
+    prompt(
+        "Enter Severity (Low/Medium/High)"
+    );
+
+    await fetch(
+        `/bugs/${id}`,
+        {
+            method:"PUT",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+                title:title,
+                severity:severity
+            })
+        }
+    );
+
+    loadBugs();
+
+}
+
+async function deleteBug(id){
+
+    const confirmDelete =
+    confirm(
+        "Delete this bug?"
+    );
+
+    if(!confirmDelete)
+        return;
+
+    await fetch(
+        `/bugs/${id}`,
+        {
+            method:"DELETE"
+        }
+    );
+
+    loadBugs();
+
+}
+
+function logout(){
+
+    localStorage.clear();
+
+    window.location =
+    "login.html";
+
+}
+
+</script>
+
+</body>
+</html>

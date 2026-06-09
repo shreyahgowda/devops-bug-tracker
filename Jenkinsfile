@@ -11,7 +11,8 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                bat 'docker run -d -p 3000:3000 bug-tracker || true'
+                bat 'docker rm -f bug-tracker-container 2>nul'
+                bat 'docker run -d -p 3000:3000 --name bug-tracker-container bug-tracker'
             }
         }
     }
