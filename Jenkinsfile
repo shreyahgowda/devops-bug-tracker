@@ -5,13 +5,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t bug-tracker .'
+                bat 'docker build -t bug-tracker .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 bug-tracker || true'
+                bat 'docker run -d -p 3000:3000 bug-tracker || true'
             }
         }
     }
