@@ -1,31 +1,25 @@
 pipeline {
-
     agent any
 
     stages {
 
-        stage('Install Dependencies') {
-            steps {
-                bat 'npm install'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t bug-tracker .'
+                bat 'docker compose build'
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Deploy Containers') {
             steps {
-                bat '''
-                docker stop bugtracker-container
-                docker rm bugtracker-container
-                docker run -d -p 3000:3000 --name bugtracker-container bug-tracker
-                '''
+                bat 'docker compose up -d'
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                bat 'docker ps'
             }
         }
 
     }
-
 }
