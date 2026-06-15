@@ -9,12 +9,12 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/bugtracker")
+mongoose.connect("mongodb://mongodb:27017/bugtracker")
 .then(() => {
     console.log("MongoDB Connected");
 })
 .catch(err => {
-    console.log(err);
+    console.log("MongoDB Error:", err);
 });
 
 // =======================
@@ -46,9 +46,12 @@ app.post("/login", async (req, res) => {
 
     } catch (err) {
 
-        res.status(500).json({
-            message: err.message
-        });
+    console.log("LOGIN ERROR:", err);
+
+    res.status(500).json({
+        message: err.message
+    });
+
 
     }
 
@@ -250,6 +253,48 @@ app.get("/assignedbugs/:developer", async (req, res) => {
     });
 
     res.json(bugs);
+
+});
+app.get("/testusers", async (req,res)=>{
+
+    try{
+
+        const users = await User.find();
+
+        res.json(users);
+
+    }catch(err){
+
+        res.status(500).json({
+            message: err.message
+        });
+
+    }
+
+});
+app.get("/seedusers", async (req, res) => {
+
+    await User.deleteMany({});
+
+    await User.insertMany([
+        {
+            username: "admin",
+            password: "admin123",
+            role: "admin"
+        },
+        {
+            username: "employee",
+            password: "employee123",
+            role: "employee"
+        },
+        {
+            username: "developer",
+            password: "developer123",
+            role: "developer"
+        }
+    ]);
+
+    res.send("Users Added");
 
 });
 app.listen(3000, () => {
